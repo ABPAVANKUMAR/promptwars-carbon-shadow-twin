@@ -57,15 +57,15 @@ A futuristic full-stack web/mobile application that visualizes a user’s carbon
 
 | Dashboard          | Shadow Twin          |
 | ------------------ | -------------------- |
-| ![](assets/dashboard.png) | ![](cp1.png) |
+| ![](assets/dashboard.png) | ![](assets/cp1.png) |
 
 | Analyzer          | Interface  |
 | ----------------- | ---------------- |
-| ![](analyzer.png) | ![](interface.png) |
+| ![](assets/analyzer.png) | ![](assets/interface.png) |
 
 | Activity Tracker | Data Representation |
 | ---------------- | -------------- |
-| ![](chart.png) | ![](cp3.png) |
+| ![](assets/chart.png) | ![](assets/cp3.png) |
 
 ---
 
