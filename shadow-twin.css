@@ -1,1 +1,459 @@
+/* ===== SHADOW TWIN VISUAL ENGINE — Light vs Dark ===== */
+
+.shadow-twin-container {
+  position: relative;
+  width: 260px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shadow-stage-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 255, 136, calc(0.18 * (1 - var(--pollution, 0)))) 0%,
+    rgba(255, 68, 68, calc(0.12 * var(--pollution, 0))) 40%,
+    transparent 70%
+  );
+  transition: background 0.8s ease;
+  pointer-events: none;
+}
+
+.shadow-twin-container.low-pollution .shadow-stage-backdrop {
+  box-shadow: inset 0 0 80px rgba(0, 255, 136, 0.12);
+}
+
+.shadow-twin-container.high-pollution .shadow-stage-backdrop {
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.6);
+}
+
+.shadow-twin {
+  position: relative;
+  width: 160px;
+  height: 220px;
+  transform: scale(var(--twin-scale, 1));
+  filter: brightness(var(--body-brightness, 1));
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.8s ease,
+              opacity 0.8s ease;
+}
+
+/* Aura — bright when clean, gone when polluted */
+.shadow-aura {
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  opacity: var(--aura-opacity, 0.5);
+  transition: all 0.8s ease;
+  animation: auraPulse 3s ease-in-out infinite;
+}
+
+.shadow-light-beam {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(255, 255, 200, calc(0.35 * var(--lightness, 1))) 0%, transparent 100%);
+  clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+  opacity: var(--lightness, 1);
+}
+
+@keyframes auraPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.shadow-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 140px;
+  border-radius: 40px 40px 20px 20px;
+  transition: all 0.8s ease;
+}
+
+.shadow-head {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transition: all 0.8s ease;
+  z-index: 2;
+}
+
+/* Cast shadow — grows darker & larger with pollution */
+.shadow-cast {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--cast-size, 80px);
+  height: calc(var(--cast-size, 80px) * 0.25);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, var(--cast-opacity, 0.4)) 0%, transparent 70%);
+  filter: blur(calc(4px + var(--pollution, 0) * 12px));
+  transition: all 0.8s ease;
+  z-index: 0;
+}
+
+.shadow-ground {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 16px;
+  border-radius: 50%;
+  filter: blur(6px);
+  transition: all 0.8s ease;
+  z-index: 1;
+}
+
+.shadow-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 3;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: particleFloat 4s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.2); }
+}
+
+.smoke-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.smoke-wisp {
+  position: absolute;
+  height: 50px;
+  border-radius: 50%;
+  filter: blur(8px);
+  animation: smokeRise 3s ease-in-out infinite;
+}
+
+@keyframes smokeRise {
+  0% { transform: translateY(0) scale(1); opacity: inherit; }
+  100% { transform: translateY(-70px) scale(1.8); opacity: 0; }
+}
+
+/* ===== CLEAN — Light, glowing, ethereal ===== */
+.shadow-twin.level-clean .shadow-aura {
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.55) 0%, rgba(180, 255, 220, 0.2) 40%, transparent 70%);
+  box-shadow: 0 0 var(--glow-size, 60px) rgba(0, 255, 136, 0.45);
+}
+
+.shadow-twin.level-clean .shadow-body {
+  background: linear-gradient(180deg, #ccffee 0%, #00ff88 40%, #00aa55 100%);
+  box-shadow: 0 0 calc(var(--glow-size, 40px) * 0.8) rgba(0, 255, 136, 0.6),
+              inset 0 -8px 16px rgba(255, 255, 255, 0.2);
+}
+
+.shadow-twin.level-clean .shadow-head {
+  background: linear-gradient(180deg, #eeffcc 0%, #88ffbb 50%, #00ff88 100%);
+  box-shadow: 0 0 calc(var(--glow-size, 30px) * 0.7) rgba(0, 255, 136, 0.7);
+}
+
+.shadow-twin.level-clean .shadow-ground {
+  background: rgba(0, 255, 136, 0.35);
+}
+
+.shadow-twin.level-clean .shadow-cast {
+  background: radial-gradient(ellipse, rgba(0, 255, 136, 0.15) 0%, transparent 70%);
+}
+
+.shadow-twin.level-clean .particle {
+  background: rgba(200, 255, 220, 0.9);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.9);
+}
+
+/* ===== MODERATE — Neutral grey ===== */
+.shadow-twin.level-moderate .shadow-aura {
+  background: radial-gradient(circle, rgba(170, 185, 200, 0.25) 0%, transparent 70%);
+  box-shadow: 0 0 30px rgba(136, 153, 170, 0.2);
+}
+
+.shadow-twin.level-moderate .shadow-body {
+  background: linear-gradient(180deg, #b0c0d0 0%, #778899 50%, #556677 100%);
+  box-shadow: 0 0 20px rgba(100, 120, 140, 0.3);
+}
+
+.shadow-twin.level-moderate .shadow-head {
+  background: linear-gradient(180deg, #ccddee 0%, #99aabb 100%);
+}
+
+.shadow-twin.level-moderate .shadow-ground {
+  background: rgba(100, 120, 140, 0.3);
+}
+
+.shadow-twin.level-moderate .particle {
+  background: rgba(170, 185, 200, 0.5);
+}
+
+/* ===== POLLUTED — Dark smoky shadow ===== */
+.shadow-twin.level-polluted .shadow-aura {
+  background: radial-gradient(circle, rgba(30, 30, 30, 0.6) 0%, transparent 70%);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+  animation: none;
+}
+
+.shadow-twin.level-polluted .shadow-body {
+  background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-twin.level-polluted .shadow-head {
+  background: linear-gradient(180deg, #444 0%, #1a1a1a 100%);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
+.shadow-twin.level-polluted .shadow-ground {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.shadow-twin.level-polluted .shadow-cast {
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 80%);
+  width: calc(var(--cast-size, 80px) * 1.3);
+}
+
+.shadow-twin.level-polluted .smoke-wisp {
+  background: rgba(40, 40, 40, 0.8);
+}
+
+.shadow-twin.level-polluted .particle {
+  background: rgba(60, 60, 60, 0.6);
+}
+
+.shadow-twin.level-polluted .shadow-light-beam {
+  opacity: 0;
+}
+
+/* ===== DANGER — Intense dark/red shadow ===== */
+.shadow-twin.level-danger .shadow-aura {
+  background: radial-gradient(circle, rgba(255, 40, 40, 0.35) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 70%);
+  box-shadow: 0 0 70px rgba(255, 68, 68, 0.5);
+  animation: dangerPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dangerPulse {
+  0%, 100% { box-shadow: 0 0 60px rgba(255, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 90px rgba(255, 68, 68, 0.75); }
+}
+
+.shadow-twin.level-danger .shadow-body {
+  background: linear-gradient(180deg, #aa2222 0%, #330000 50%, #000000 100%);
+  box-shadow: 0 0 50px rgba(255, 68, 68, 0.4), inset 0 0 30px rgba(0, 0, 0, 0.7);
+  animation: bodyShake 0.6s ease-in-out infinite;
+}
+
+@keyframes bodyShake {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  25% { transform: translateX(calc(-50% - 3px)) rotate(-1deg); }
+  75% { transform: translateX(calc(-50% + 3px)) rotate(1deg); }
+}
+
+.shadow-twin.level-danger .shadow-head {
+  background: linear-gradient(180deg, #cc3333 0%, #220000 100%);
+  box-shadow: 0 0 25px rgba(255, 68, 68, 0.7);
+}
+
+.shadow-twin.level-danger .shadow-ground {
+  background: rgba(255, 68, 68, 0.25);
+}
+
+.shadow-twin.level-danger .shadow-cast {
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.95) 0%, rgba(80, 0, 0, 0.5) 50%, transparent 80%);
+  width: calc(var(--cast-size, 80px) * 1.6);
+  height: calc(var(--cast-size, 80px) * 0.35);
+}
+
+.shadow-twin.level-danger .smoke-wisp {
+  background: rgba(120, 20, 20, 0.7);
+}
+
+.shadow-twin.level-danger .particle {
+  background: rgba(255, 68, 68, 0.7);
+  box-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+}
+
+.shadow-twin.level-danger .shadow-light-beam {
+  opacity: 0;
+}
+
+/* Face expressions */
+.shadow-face {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  z-index: 2;
+}
+
+.shadow-eye {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  transition: all 0.5s ease;
+}
+
+.shadow-mouth {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 8px;
+  border-radius: 0 0 12px 12px;
+  transition: all 0.5s ease;
+}
+
+.shadow-mouth.mouth-happy {
+  background: transparent;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+  height: 6px;
+}
+
+.shadow-mouth.mouth-neutral {
+  width: 12px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 1px;
+}
+
+.shadow-mouth.mouth-sad {
+  border-top: 3px solid rgba(200, 200, 200, 0.6);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  height: 6px;
+  background: transparent;
+}
+
+.shadow-twin.level-clean .shadow-eye {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+  animation: blink 4s ease-in-out infinite;
+}
+
+.shadow-twin.level-polluted .shadow-eye,
+.shadow-twin.level-danger .shadow-eye {
+  background: #888;
+  box-shadow: none;
+  height: 6px;
+  border-radius: 2px;
+}
+
+.shadow-twin.level-danger .shadow-eye {
+  background: #ff2222;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+  width: 10px;
+}
+
+@keyframes blink {
+  0%, 45%, 55%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.1); }
+}
+
+/* Pollution meter bar */
+.pollution-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 220px;
+  margin-top: 8px;
+}
+
+.meter-label {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.meter-label.light-label { color: var(--green-bright); }
+.meter-label.dark-label { color: #ff6666; }
+
+.meter-track {
+  flex: 1;
+  height: 6px;
+  background: linear-gradient(90deg, var(--green-bright), #8899aa, #333, #ff4444);
+  border-radius: 999px;
+  position: relative;
+  overflow: visible;
+}
+
+.meter-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+  transition: width 0.8s ease;
+  pointer-events: none;
+}
+
+.meter-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--text-primary);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  transition: left 0.8s ease;
+}
+
+/* Evolution animation */
+.shadow-twin.evolve {
+  animation: evolve 1s ease;
+}
+
+@keyframes evolve {
+  0% { transform: scale(var(--twin-scale, 1)); }
+  30% { transform: scale(calc(var(--twin-scale, 1) * 1.12)); filter: brightness(calc(var(--body-brightness, 1) * 1.3)); }
+  100% { transform: scale(var(--twin-scale, 1)); }
+}
+
+/* Stage ambient shift on home */
+.shadow-stage {
+  transition: background 0.8s ease;
+}
+
+.shadow-twin-container.high-pollution {
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.8));
+}
+
+.shadow-twin-container.low-pollution {
+  filter: drop-shadow(0 10px 30px rgba(0, 255, 136, 0.2));
+}
 
