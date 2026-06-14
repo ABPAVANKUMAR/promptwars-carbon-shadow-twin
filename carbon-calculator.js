@@ -47,3 +47,20 @@ export function getShadowVisuals(score) {
     pollution: score / 100
   };
 }
+export function detectPatterns(entries) {
+  if (!entries || entries.length === 0) return {};
+
+  let total = entries.reduce((sum, e) => sum + (e.score || 0), 0);
+  let avg = total / entries.length;
+
+  return {
+    average: avg,
+    trend: avg > 60 ? "high" : avg > 30 ? "medium" : "low"
+  };
+}
+
+export function generateSuggestions(entries) {
+  const patterns = detectPatterns(entries);
+
+  if (patterns.trend === "high") {
+    return ["
