@@ -1,1 +1,367 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0a0f0a">
+  <title>Carbon Shadow Twin + Human Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/shadow-twin.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/voice-assistant.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Ambient background -->
+    <div class="ambient-bg">
+      <div class="grid-overlay"></div>
+      <div class="glow-orb glow-orb-1"></div>
+      <div class="glow-orb glow-orb-2"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <div class="logo-text">
+          <span class="logo-title">Shadow Twin</span>
+          <span class="logo-sub">Human Analyzer</span>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-pill" id="headerScore">
+          <span class="stat-label">Today</span>
+          <span class="stat-value">--</span>
+        </div>
+        <div class="stat-pill level-pill" id="headerLevel">
+          <span class="stat-value">--</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main content area -->
+    <main class="app-main">
+      <!-- HOME SCREEN -->
+      <section class="screen active" id="screen-home" data-screen="home">
+        <div class="shadow-stage">
+          <div class="shadow-twin-container" id="shadowTwin">
+            <!-- Rendered by shadow-twin.js -->
+          </div>
+          <p class="shadow-message" id="shadowMessage">Your shadow awaits your choices...</p>
+          <div class="level-badge" id="levelBadge">
+            <span class="level-emoji">🌿</span>
+            <span class="level-name">Clean</span>
+          </div>
+        </div>
+
+        <div class="home-stats-grid">
+          <div class="home-stat-card">
+            <span class="home-stat-value" id="todayScore">--</span>
+            <span class="home-stat-label">kg CO₂ today</span>
+          </div>
+          <div class="home-stat-card">
+            <span class="home-stat-value" id="streakDays">0</span>
+            <span class="home-stat-label">day streak</span>
+          </div>
+          <div class="home-stat-card">
+            <span class="home-stat-value" id="weeklyAvg">--</span>
+            <span class="home-stat-label">weekly avg</span>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="action-btn primary" data-nav="input">
+            <span class="action-icon">✏️</span>
+            Log Today
+          </button>
+          <button class="action-btn" data-nav="analyzer">
+            <span class="action-icon">📊</span>
+            Analyze
+          </button>
+          <button class="action-btn" data-nav="chat">
+            <span class="action-icon">💬</span>
+            Green Coach
+          </button>
+        </div>
+
+        <div class="emotion-banner" id="emotionBanner">
+          <p>Connect with your digital shadow — every choice shapes its form.</p>
+        </div>
+
+        <button type="button" class="home-speak-btn" id="homeSpeakShadow">
+          🌑 Hear Shadow Twin speak
+        </button>
+        <button type="button" class="home-speak-btn secondary" id="homeFullBriefing">
+          🔊 Full voice briefing (all topics)
+        </button>
+      </section>
+
+      <!-- INPUT SCREEN -->
+      <section class="screen" id="screen-input" data-screen="input">
+        <h2 class="screen-title">Log Your Day</h2>
+        <p class="screen-subtitle">Your shadow twin evolves with every choice</p>
+
+        <form class="input-form" id="dailyInputForm">
+          <div class="input-group">
+            <label class="input-label">
+              <span class="label-icon">🚗</span> Travel
+            </label>
+            <div class="option-grid" data-field="travel">
+              <button type="button" class="option-btn" data-value="bike">
+                <span class="option-emoji">🚲</span>
+                <span class="option-name">Bike</span>
+                <span class="option-co2">0.5 kg</span>
+              </button>
+              <button type="button" class="option-btn" data-value="bus">
+                <span class="option-emoji">🚌</span>
+                <span class="option-name">Bus</span>
+                <span class="option-co2">3 kg</span>
+              </button>
+              <button type="button" class="option-btn" data-value="car">
+                <span class="option-emoji">🚗</span>
+                <span class="option-name">Car</span>
+                <span class="option-co2">8 kg</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">
+              <span class="label-icon">🍽️</span> Food
+            </label>
+            <div class="option-grid two-col" data-field="food">
+              <button type="button" class="option-btn" data-value="veg">
+                <span class="option-emoji">🥗</span>
+                <span class="option-name">Vegetarian</span>
+                <span class="option-co2">2 kg</span>
+              </button>
+              <button type="button" class="option-btn" data-value="nonveg">
+                <span class="option-emoji">🍖</span>
+                <span class="option-name">Non-Veg</span>
+                <span class="option-co2">6 kg</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">
+              <span class="label-icon">⚡</span> Electricity Use
+            </label>
+            <div class="option-grid three-col" data-field="electricity">
+              <button type="button" class="option-btn" data-value="low">
+                <span class="option-emoji">💡</span>
+                <span class="option-name">Low</span>
+                <span class="option-co2">1 kg</span>
+              </button>
+              <button type="button" class="option-btn" data-value="medium">
+                <span class="option-emoji">🔌</span>
+                <span class="option-name">Medium</span>
+                <span class="option-co2">3 kg</span>
+              </button>
+              <button type="button" class="option-btn" data-value="high">
+                <span class="option-emoji">⚡</span>
+                <span class="option-name">High</span>
+                <span class="option-co2">7 kg</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="score-preview" id="scorePreview">
+            <span class="preview-label">Estimated carbon:</span>
+            <span class="preview-value">-- kg CO₂</span>
+          </div>
+
+          <div class="voice-input-bar">
+            <button type="button" class="voice-btn" id="voiceInputBtn" title="Speak your choices">
+              <span class="voice-icon">🎤</span>
+              <span class="voice-label">Voice Input</span>
+            </button>
+            <span class="voice-status" id="voiceInputStatus"></span>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitDayBtn" disabled>
+            Update Shadow Twin
+          </button>
+        </form>
+      </section>
+
+      <!-- ANALYZER SCREEN -->
+      <section class="screen" id="screen-analyzer" data-screen="analyzer">
+        <h2 class="screen-title">Carbon Analyzer</h2>
+        <p class="screen-subtitle">Patterns, insights & your weekly report</p>
+
+        <div class="analyzer-cards">
+          <div class="analyzer-card highlight">
+            <h3>Weekly Report</h3>
+            <div class="weekly-summary" id="weeklySummary">
+              <div class="summary-row">
+                <span>Total this week</span>
+                <strong id="weeklyTotal">-- kg</strong>
+              </div>
+              <div class="summary-row">
+                <span>Daily average</span>
+                <strong id="weeklyDailyAvg">-- kg</strong>
+              </div>
+              <div class="summary-row">
+                <span>Best day</span>
+                <strong id="weeklyBest">--</strong>
+              </div>
+              <div class="summary-row">
+                <span>Trend</span>
+                <strong id="weeklyTrend">--</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="analyzer-card">
+            <h3>Biggest Pollution Source</h3>
+            <div class="pollution-source" id="biggestSource">
+              <div class="source-icon">--</div>
+              <div class="source-info">
+                <span class="source-name">Log data to analyze</span>
+                <span class="source-percent">--%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="analyzer-card">
+            <h3>Weekly Carbon Chart</h3>
+            <div class="chart-container">
+              <canvas id="weeklyChart"></canvas>
+            </div>
+          </div>
+
+          <div class="analyzer-card">
+            <h3>Source Breakdown</h3>
+            <div class="chart-container small">
+              <canvas id="sourceChart"></canvas>
+            </div>
+          </div>
+
+          <div class="analyzer-card">
+            <h3>Detected Patterns</h3>
+            <ul class="pattern-list" id="patternList">
+              <li class="pattern-item empty">No patterns yet — log a few days!</li>
+            </ul>
+          </div>
+
+          <div class="analyzer-card suggestions">
+            <h3>Personalized Suggestions</h3>
+            <ul class="suggestion-list" id="suggestionList">
+              <li class="suggestion-item">Start logging to get personalized eco tips!</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAT SCREEN -->
+      <section class="screen" id="screen-chat" data-screen="chat">
+        <h2 class="screen-title">Green Coach</h2>
+        <p class="screen-subtitle">Your AI eco companion</p>
+
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot">
+              <div class="msg-avatar">🌿</div>
+              <div class="msg-bubble">
+                Hey! I'm your Green Coach. Ask me anything — "How to reduce carbon?", "Best travel option?", or tell me about your day!
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-quick-prompts">
+            <button type="button" class="quick-prompt" data-prompt="How to reduce carbon?">Reduce carbon?</button>
+            <button type="button" class="quick-prompt" data-prompt="Best travel option?">Best travel?</button>
+            <button type="button" class="quick-prompt" data-prompt="How is my shadow doing?">Shadow status?</button>
+            <button type="button" class="quick-prompt" data-prompt="Tips for vegetarian diet">Veg tips</button>
+          </div>
+
+          <div class="chat-input-bar">
+            <button type="button" class="voice-btn small" id="voiceChatBtn" title="Speak">
+              🎤
+            </button>
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask your Green Coach..." autocomplete="off">
+            <button type="button" class="chat-send" id="chatSendBtn">➤</button>
+            <button type="button" class="tts-toggle" id="ttsToggle" title="Toggle voice replies">
+              🔊
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-nav="home">
+        <span class="nav-icon">◉</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-btn" data-nav="input">
+        <span class="nav-icon">✎</span>
+        <span class="nav-label">Log</span>
+      </button>
+      <button class="nav-btn" data-nav="analyzer">
+        <span class="nav-icon">▤</span>
+        <span class="nav-label">Analyze</span>
+      </button>
+      <button class="nav-btn" data-nav="chat">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Coach</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Eco Voice Assistant -->
+  <button type="button" class="voice-assistant-fab" id="voiceAssistantFab" title="Eco Voice Assistant" aria-label="Open voice assistant">
+    <div class="va-orb" id="vaOrb"></div>
+  </button>
+
+  <div class="voice-assistant-panel" id="voiceAssistantPanel" aria-live="polite">
+    <div class="va-header">
+      <div class="va-title-wrap">
+        <div>
+          <div class="va-title">Eco Assistant</div>
+          <div class="va-subtitle" id="vaOrbLabel">Voice powered</div>
+        </div>
+      </div>
+      <button type="button" class="va-close" id="vaCloseBtn" aria-label="Close">×</button>
+    </div>
+
+    <div class="va-waveform" id="vaWaveform">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="va-transcript" id="vaTranscript"></div>
+    <div class="va-speaker-badge" id="vaSpeakerBadge"></div>
+    <div class="va-response visible from-eco" id="vaResponse">Say "tell me about my shadow" or tap a topic below.</div>
+    <div class="va-status" id="vaStatus">Tap mic or speak…</div>
+
+    <div class="va-controls">
+      <button type="button" class="va-mic-btn" id="vaMicBtn">🎤 Speak Now</button>
+      <button type="button" class="va-shadow-btn" id="vaShadowSpeakBtn">🌑 Shadow Voice</button>
+      <button type="button" class="va-brief-btn" id="vaFullBriefingBtn">📋 Full Briefing</button>
+    </div>
+
+    <p class="va-topics-title">Voice Topics</p>
+    <div class="va-topic-grid" id="vaTopicGrid"></div>
+
+    <div class="va-quick-cmds">
+      <button type="button" class="va-quick-cmd" data-cmd="tell me about my shadow">Shadow</button>
+      <button type="button" class="va-quick-cmd" data-cmd="weekly carbon report">Weekly</button>
+      <button type="button" class="va-quick-cmd" data-cmd="give me suggestions">Tips</button>
+      <button type="button" class="va-quick-cmd" data-cmd="my streak and level">Streak</button>
+      <button type="button" class="va-quick-cmd" data-cmd="what topics can you help with">Topics</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
