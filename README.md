@@ -17,7 +17,7 @@ A futuristic full-stack web/mobile application that visualizes a user’s carbon
 
 ---
 
-## 🚀 Live Demo
+##  Live Demo
 
 [Click here to view the app](https://carbon-shadow-twin.netlify.app)
 
@@ -90,7 +90,7 @@ To build an engaging system that:
 
 ---
 
-## 🌱 Impact
+##  Impact
 
 * Promotes eco-friendly decision making
 * Makes climate awareness accessible
@@ -102,9 +102,9 @@ To build an engaging system that:
 
 Hackathons focused on:
 
-* Climate Tech 🌍
-* Artificial Intelligence 🤖
-* Sustainable Innovation ♻️
+* Climate Tech
+* Artificial Intelligence 
+* Sustainable Innovation 
 
 ---
 
