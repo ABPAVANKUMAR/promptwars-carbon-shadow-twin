@@ -19,7 +19,7 @@ A futuristic full-stack web/mobile application that visualizes a user’s carbon
 
 ##  Live Demo
 
-[Click here to view the app](https://carbon-shadow-twin.netlify.app)
+(https://carbon-shadow-twin.netlify.app)
 
 ---
 
